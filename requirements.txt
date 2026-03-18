@@ -1,0 +1,5 @@
+Flask
+Flask-SocketIO
+mysql-connector-python
+eventlet
+gunicorn
