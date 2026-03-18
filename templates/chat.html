@@ -1,26 +1,35 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Chat_io</title>
-    <link rel="stylesheet" href="/static/style.css">
+
+<title>ChatIO</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 </head>
+
 <body>
 
 <div class="chat-container">
-    <div class="header">
-        Chat_io - {{username}}
-    </div>
 
-    <div id="messages"></div>
+<div class="header">
+ChatIO - {{username}}
+</div>
 
-    <div class="input-box">
-        <input id="message" placeholder="Type a message...">
-        <button onclick="sendMessage()">Send</button>
-    </div>
+<div id="messages"></div>
+
+<div class="input-box">
+<input id="message" placeholder="Type a message...">
+<button onclick="sendMessage()">Send</button>
+</div>
+
 </div>
 
 <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
-<script src="/static/script.js"></script>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
+
 </html>
