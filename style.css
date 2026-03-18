@@ -1,56 +1,84 @@
-body {
-    margin: 0;
-    font-family: Arial;
-    background: #ece5dd;
+body{
+    margin:0;
+    font-family:Segoe UI, sans-serif;
+    height:100vh;
+    background: linear-gradient(135deg,#075e54,#25d366);
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-/* Login */
-.login-box {
-    width: 300px;
-    margin: 100px auto;
-    background: white;
-    padding: 20px;
-    text-align: center;
+/* Main container */
+.container{
+    width:100%;
+    display:flex;
+    justify-content:center;
 }
 
-/* Chat UI */
-.chat-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+/* Card */
+.card{
+    background:white;
+    padding:40px;
+    width:420px;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    text-align:center;
 }
 
-.header {
-    background: #075e54;
-    color: white;
-    padding: 15px;
+/* Title */
+.card h1{
+    margin:0;
+    color:#075e54;
 }
 
-#messages {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
+.subtitle{
+    color:gray;
+    margin-bottom:25px;
 }
 
-.msg {
-    background: #dcf8c6;
-    padding: 8px;
-    margin: 5px;
-    border-radius: 5px;
-    width: fit-content;
+/* Forms container */
+.forms{
+    display:flex;
+    gap:20px;
 }
 
-.input-box {
-    display: flex;
+/* Each form */
+.form{
+    flex:1;
+    display:flex;
+    flex-direction:column;
 }
 
-.input-box input {
-    flex: 1;
-    padding: 10px;
+/* Inputs */
+.form input{
+    padding:12px;
+    margin-bottom:12px;
+    border-radius:6px;
+    border:1px solid #ddd;
+    font-size:14px;
 }
 
-.input-box button {
-    background: #25d366;
-    border: none;
-    padding: 10px;
+/* Buttons */
+.form button{
+    padding:12px;
+    border:none;
+    border-radius:6px;
+    background:#075e54;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.form button:hover{
+    background:#0a7c70;
+}
+
+/* Register button */
+.register-btn{
+    background:#25d366;
+}
+
+.register-btn:hover{
+    background:#1ebc57;
 }
