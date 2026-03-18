@@ -82,25 +82,3 @@ body{
 .register-btn:hover{
     background:#1ebc57;
 }
-
-.login-box input {
-    width: 90%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.login-box button {
-    width: 95%;
-    padding: 10px;
-    background: #075e54;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.login-box button:hover {
-    background: #0a7c70;
-}
