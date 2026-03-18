@@ -18,7 +18,7 @@ def get_db():
     )
 
 # Home page (login)
-@app.route("/", methods=["GET", "POST"])
+@app.route("/login", methods=["GET", "POST"])
 def index():
 
     if request.method == "POST":
