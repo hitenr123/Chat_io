@@ -23,36 +23,39 @@ def home():
 @app.route("/register", methods=["POST"])
 def register():
     try:
-        data = request.json
+        username = request.form["username"]
+        email = request.form["email"]
+        password = request.form["password"]
 
         conn = get_db()
         cursor = conn.cursor()
 
         cursor.execute(
             "INSERT INTO users (username,email,password) VALUES (%s,%s,%s)",
-            (data["username"], data["email"], data["password"])
+            (username, email, password)
         )
 
         conn.commit()
         conn.close()
 
-        return {"status":"success"}
+        return jsonify({"status":"success"})
 
     except Exception as e:
-        return {"error": str(e)}
+        return jsonify({"error": str(e)})
 
 
 @app.route("/login", methods=["POST"])
 def login():
     try:
-        data = request.json
-        
+        username = request.form["username"]
+        password = request.form["password"]
+
         conn = get_db()
         cursor = conn.cursor()
 
         cursor.execute(
             "SELECT * FROM users WHERE username=%s AND password=%s",
-            (data["username"], data["password"])
+            (username, password)
         )
 
         user = cursor.fetchone()
@@ -60,13 +63,13 @@ def login():
         conn.close()
 
         if user:
-            return {"status":"success"}
+            return jsonify({"status":"success"})
         else:
-            return {"status":"invalid"}
-    
+            return jsonify({"status":"invalid"})
+
     except Exception as e:
-        return {"error": str(e)}
-    
+        return jsonify({"error": str(e)})
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
