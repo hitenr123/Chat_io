@@ -1,23 +1,7 @@
-var socket = io();
+function toggleForm() {
+  const login = document.getElementById("loginForm");
+  const register = document.getElementById("registerForm");
 
-function sendMessage(){
-
-let input = document.getElementById("message")
-
-socket.send(input.value)
-
-input.value = ""
-
+  login.classList.toggle("active");
+  register.classList.toggle("active");
 }
-
-socket.on("message", function(msg){
-
-let div = document.createElement("div")
-
-div.classList.add("msg")
-
-div.innerText = msg
-
-document.getElementById("messages").appendChild(div)
-
-})
