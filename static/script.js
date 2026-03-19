@@ -11,24 +11,24 @@ function toggleForm() {
 document.getElementById("registerForm").addEventListener("submit", async function(e){
   e.preventDefault();
 
-  const username = document.querySelector("#registerForm input[type='text']").value;
-  const email = document.querySelector("#registerForm input[type='email']").value;
-  const password = document.querySelector("#registerForm input[type='password']").value;
+  const username = this.querySelector("input[name='username']").value;
+  const email = this.querySelector("input[name='email']").value;
+  const password = this.querySelector("input[name='password']").value;
 
-  const res = await fetch("/register",{
+  const res = await fetch("https://web-production-3a7ea.up.railway.app/register",{
     method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({username,email,password})
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+      username,
+      email,
+      password
+    })
   });
 
   const data = await res.json();
-
-  if(data.status==="success"){
-    alert("Account created!");
-    toggleForm();
-  }else{
-    alert("Username already exists");
-  }
+  console.log(data);
 });
 
 
@@ -36,21 +36,20 @@ document.getElementById("registerForm").addEventListener("submit", async functio
 document.getElementById("loginForm").addEventListener("submit", async function(e){
   e.preventDefault();
 
-  const username = document.querySelector("#loginForm input[type='text']").value;
-  const password = document.querySelector("#loginForm input[type='password']").value;
+  const username = this.querySelector("input[name='username']").value;
+  const password = this.querySelector("input[name='password']").value;
 
-  const res = await fetch("/login",{
+  const res = await fetch("https://web-production-3a7ea.up.railway.app/login",{
     method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({username,password})
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+      username,
+      password
+    })
   });
 
   const data = await res.json();
-
-  if(data.status==="success"){
-    alert("Login successful");
-    window.location.href="/dashboard";
-  }else{
-    alert("Invalid login");
-  }
+  console.log(data);
 });
