@@ -67,12 +67,6 @@ def login():
     except Exception as e:
         return {"error": str(e)}
     
-@app.route("/testdb")
-def testdb():
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute("SELECT 1")
-    return "Database connected!"
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
