@@ -22,42 +22,51 @@ def home():
 
 @app.route("/register", methods=["POST"])
 def register():
-    data = request.json
+    try:
+        data = request.json
 
-    conn = get_db()
-    cursor = conn.cursor()
+        conn = get_db()
+        cursor = conn.cursor()
 
-    cursor.execute(
-        "INSERT INTO users (username,email,password) VALUES (%s,%s,%s)",
-        (data["username"], data["email"], data["password"])
-    )
+        cursor.execute(
+            "INSERT INTO users (username,email,password) VALUES (%s,%s,%s)",
+            (data["username"], data["email"], data["password"])
+        )
 
-    conn.commit()
-    conn.close()
+        conn.commit()
+        conn.close()
 
-    return {"status":"success"}
+        return {"status":"success"}
+
+    except Exception as e:
+        return {"error": str(e)}
 
 
 @app.route("/login", methods=["POST"])
 def login():
-    data = request.json
+    try:
+        data = request.json
+        
+        conn = get_db()
+        cursor = conn.cursor()
 
-    conn = get_db()
-    cursor = conn.cursor()
+        cursor.execute(
+            "SELECT * FROM users WHERE username=%s AND password=%s",
+            (data["username"], data["password"])
+        )
 
-    cursor.execute(
-        "SELECT * FROM users WHERE username=%s AND password=%s",
-        (data["username"], data["password"])
-    )
+        user = cursor.fetchone()
 
-    user = cursor.fetchone()
+        conn.close()
 
-    conn.close()
-
-    if user:
-        return {"status":"success"}
-    else:
-        return {"status":"invalid"}
+        if user:
+            return {"status":"success"}
+        else:
+            return {"status":"invalid"}
+    
+    except Exception as e:
+        return {"error": str(e)}
+    
 
 
 if __name__ == "__main__":
