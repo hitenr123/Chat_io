@@ -15,7 +15,7 @@ document.getElementById("registerForm").addEventListener("submit", async functio
   const email = this.querySelector("input[name='email']").value;
   const password = this.querySelector("input[name='password']").value;
 
-  fetch("https://web-production-3a7ea.up.railway.app/register", {
+  const res = await fetch("https://web-production-3a7ea.up.railway.app/register", {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
