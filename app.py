@@ -25,6 +25,8 @@ def home():
 @app.route("/register", methods=["POST"])
 def register():
     try:
+        data = request.get_json()
+        
         username = request.form["username"]
         email = request.form["email"]
         password = request.form["password"]
@@ -49,6 +51,8 @@ def register():
 @app.route("/login", methods=["POST"])
 def login():
     try:
+        data = request.get_json()
+        
         username = request.form["username"]
         password = request.form["password"]
 
