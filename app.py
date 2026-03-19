@@ -9,11 +9,11 @@ CORS(app)   # enable CORS
 
 def get_db():
     return mysql.connector.connect(
-        host=os.getenv("MYSQLHOST"),
-        user=os.getenv("MYSQLUSER"),
-        password=os.getenv("MYSQLPASSWORD"),
-        database=os.getenv("MYSQLDATABASE"),
-        port=int(os.getenv("MYSQLPORT"))
+        host="autorack.proxy.rlwy.net",
+        user="root",
+        password="hiten",
+        database="railway",
+        port=50880
     )
 
 
