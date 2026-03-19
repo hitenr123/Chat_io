@@ -1,118 +1,79 @@
-/* Reset */
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:"Segoe UI", Arial, sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-/* Background */
-body{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb);
-background-size:300% 300%;
-animation:bgMove 10s infinite alternate;
+body {
+  height: 100vh;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Background animation */
-@keyframes bgMove{
-0%{background-position:left;}
-100%{background-position:right;}
+.container {
+  width: 320px;
 }
 
-/* Main container */
-.container{
-width:700px;
-background:linear-gradient(135deg,#ffffff,#f1f5f9);
-padding:40px;
-border-radius:16px;
-box-shadow:0 20px 50px rgba(0,0,0,0.35);
-border:3px solid #3b82f6;
+.form-box {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  position: relative;
 }
 
-/* Title */
-.title{
-text-align:center;
-margin-bottom:35px;
-font-size:34px;
-color:#1e293b;
-letter-spacing:1px;
-font-weight:700;
+.form {
+  display: none;
+  flex-direction: column;
 }
 
-/* Login + Register layout */
-.auth-container{
-display:flex;
-gap:40px;
-position:relative;
+.form.active {
+  display: flex;
 }
 
-/* Divider line */
-.auth-container::after{
-content:"";
-position:absolute;
-left:50%;
-top:0;
-height:100%;
-width:2px;
-background:#e2e8f0;
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-/* Sections */
-.auth-section{
-flex:1;
+input {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
 }
 
-/* Section titles */
-.auth-section h2{
-text-align:center;
-margin-bottom:20px;
-color:#1e293b;
-font-size:20px;
+input:focus {
+  border-color: #4facfe;
 }
 
-/* Inputs */
-.auth-section input{
-width:100%;
-padding:12px;
-margin-bottom:14px;
-border-radius:8px;
-border:1px solid #d1d5db;
-font-size:14px;
-transition:0.25s;
+button {
+  margin-top: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #4facfe;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-/* Input focus effect */
-.auth-section input:focus{
-border-color:#3b82f6;
-outline:none;
-box-shadow:0 0 10px rgba(59,130,246,0.5);
+button:hover {
+  background: #00c6ff;
 }
 
-/* Buttons */
-.auth-section button{
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-background:linear-gradient(90deg,#2563eb,#3b82f6);
-color:white;
-font-size:15px;
-font-weight:600;
-cursor:pointer;
-transition:0.25s;
+p {
+  margin-top: 15px;
+  text-align: center;
 }
 
-/* Button hover */
-.auth-section button:hover{
-transform:translateY(-2px);
-box-shadow:0 10px 20px rgba(0,0,0,0.25);
-}
-
-/* Register button */
-.register-btn{
-background:linear-gradient(90deg,#16a34a,#22c55e);
+span {
+  color: #4facfe;
+  cursor: pointer;
+  font-weight: bold;
 }
