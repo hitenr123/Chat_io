@@ -1,47 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Chat_io</title>
-<link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8">
+  <title>Login & Register</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <div class="container">
+  <div class="form-box">
 
-<h1 class="title">Chat io</h1>
+    <!-- Login Form -->
+    <form id="loginForm" class="form active">
+      <h2>Login</h2>
+      <input type="text" placeholder="Username" required>
+      <input type="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+      <p>Don't have an account? <span onclick="toggleForm()">Register</span></p>
+    </form>
 
-<div class="auth-container">
+    <!-- Register Form -->
+    <form id="registerForm" class="form">
+      <h2>Register</h2>
+      <input type="text" placeholder="Username" required>
+      <input type="email" placeholder="Email" required>
+      <input type="password" placeholder="Password" required>
+      <button type="submit">Register</button>
+      <p>Already have an account? <span onclick="toggleForm()">Login</span></p>
+    </form>
 
-<div class="auth-section">
-
-<h2>Login</h2>
-
-<form action="/login" method="POST">
-<input type="text" name="username" placeholder="Username" required>
-<input type="password" name="password" placeholder="Password" required>
-<button type="submit">Login</button>
-</form>
-
+  </div>
 </div>
 
-
-<div class="auth-section">
-
-<h2>Register</h2>
-
-<form action="/register" method="POST">
-<input type="text" name="username" placeholder="Username" required>
-<input type="password" name="password" placeholder="Password" required>
-<button class="register-btn" type="submit">Register</button>
-</form>
-
-</div>
-
-</div>
-
-</div>
-
+<script src="script.js"></script>
 </body>
 </html>
