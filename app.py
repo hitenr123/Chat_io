@@ -25,11 +25,14 @@ def home():
 @app.route("/register", methods=["POST"])
 def register():
     try:
-        data = request.get_json()
-        
-        username = request.form["username"]
-        email = request.form["email"]
-        password = request.form["password"]
+        data = request.get_json(silent=True)
+
+        if not data:
+            return jsonify({"error": "No JSON received"}), 400
+
+        username = data.get("username")
+        email = data.get("email")
+        password = data.get("password")
 
         conn = get_db()
         cursor = conn.cursor()
@@ -42,7 +45,7 @@ def register():
         conn.commit()
         conn.close()
 
-        return jsonify({"status":"success"})
+        return jsonify({"status": "success"})
 
     except Exception as e:
         return jsonify({"error": str(e)})
@@ -51,10 +54,13 @@ def register():
 @app.route("/login", methods=["POST"])
 def login():
     try:
-        data = request.get_json()
-        
-        username = request.form["username"]
-        password = request.form["password"]
+        data = request.get_json(silent=True)
+
+        if not data:
+            return jsonify({"error": "No JSON received"}), 400
+
+        username = data.get("username")
+        password = data.get("password")
 
         conn = get_db()
         cursor = conn.cursor()
@@ -65,13 +71,12 @@ def login():
         )
 
         user = cursor.fetchone()
-
         conn.close()
 
         if user:
-            return jsonify({"status":"success"})
+            return jsonify({"status": "success"})
         else:
-            return jsonify({"status":"invalid"})
+            return jsonify({"status": "invalid"})
 
     except Exception as e:
         return jsonify({"error": str(e)})

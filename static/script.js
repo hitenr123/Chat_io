@@ -15,17 +15,19 @@ document.getElementById("registerForm").addEventListener("submit", async functio
   const email = this.querySelector("input[name='email']").value;
   const password = this.querySelector("input[name='password']").value;
 
-  const res = await fetch("https://web-production-3a7ea.up.railway.app/register",{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
-    },
-    body:JSON.stringify({
-      username,
-      email,
-      password
-    })
-  });
+  fetch("https://web-production-3a7ea.up.railway.app/register", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    username: username,
+    email: email,
+    password: password
+  })
+})
+.then(res => res.json())
+.then(data => console.log(data));
 
   const data = await res.json();
   console.log(data);
@@ -39,16 +41,18 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
   const username = this.querySelector("input[name='username']").value;
   const password = this.querySelector("input[name='password']").value;
 
-  const res = await fetch("https://web-production-3a7ea.up.railway.app/login",{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
-    },
-    body:JSON.stringify({
-      username,
-      password
-    })
-  });
+  fetch("https://web-production-3a7ea.up.railway.app/register", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    username: username,
+    password: password
+  })
+})
+.then(res => res.json())
+.then(data => console.log(data));
 
   const data = await res.json();
   console.log(data);
