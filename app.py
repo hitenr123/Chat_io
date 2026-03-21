@@ -2,22 +2,23 @@ from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 import os
 import mysql.connector
+import urllib.parse
 
 app = Flask(__name__)
 CORS(app)   # enable CORS
 
-def get_db():
-    return mysql.connector.connect(
-        host=os.getenv("MYSQLHOST"),
-        user=os.getenv("MYSQLUSER"),
-        password=os.getenv("MYSQLPASSWORD"),
-        database=os.getenv("MYSQL_DATABASE"),  # FIXED HERE
-        port=int(os.getenv("MYSQLPORT"))
-    )
 
-print(os.getenv("MYSQLHOST"))
-print(os.getenv("MYSQLUSER"))
-print(os.getenv("MYSQL_DATABASE"))
+def get_db():
+    url = os.getenv("DATABASE_URL")
+    parsed = urllib.parse.urlparse(url)
+
+    return mysql.connector.connect(
+        host=parsed.hostname,
+        user=parsed.username,
+        password=parsed.password,
+        database=parsed.path[1:],
+        port=parsed.port
+    )
 
 
 @app.route("/")
