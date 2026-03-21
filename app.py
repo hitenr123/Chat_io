@@ -15,6 +15,10 @@ def get_db():
         port=int(os.getenv("MYSQLPORT"))
     )
 
+print(os.getenv("MYSQLHOST"))
+print(os.getenv("MYSQLUSER"))
+print(os.getenv("MYSQL_DATABASE"))
+
 
 @app.route("/")
 def home():
