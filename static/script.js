@@ -38,27 +38,30 @@ document
     const email = this.querySelector("input[name='email']").value;
     const password = this.querySelector("input[name='password']").value;
 
-    const res = await fetch(
-      "https://web-production-3a7ea.up.railway.app/register",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: username,
-          email: email,
-          password: password,
-        }),
-      },
-    );
+    try {
+      const res = await fetch(
+        "https://web-production-3a7ea.up.railway.app/register",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, email, password }),
+        }
+      );
 
-    const data = await res.json();
-    console.log(data);
-    if (data.status === "success") {
-      showPopup("Registration Successful 🎉", "success");
-    } else {
-      showPopup("Registration Failed ❌", "error");
+      const data = await res.json();
+      console.log(data);
+
+      if (data.status === "success") {
+        showPopup("Registration Successful 🎉", "success");
+      } else if (data.error) {
+        showPopup(data.error, "error");
+      } else {
+        showPopup("Registration Failed ❌", "error");
+      }
+
+    } catch (err) {
+      console.error(err);
+      showPopup("Server connection failed ❌", "error");
     }
   });
 
@@ -71,25 +74,27 @@ document
     const username = this.querySelector("input[name='username']").value;
     const password = this.querySelector("input[name='password']").value;
 
-    const res = await fetch(
-      "https://web-production-3a7ea.up.railway.app/login",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
-      },
-    );
+    try {
+      const res = await fetch(
+        "https://web-production-3a7ea.up.railway.app/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
-    const data = await res.json();
-    console.log(data);
-    if (data.status === "success") {
-      showPopup("Login Successful 🎉", "success");
-    } else {
-      showPopup("Invalid Username or Password ❌", "error");
+      const data = await res.json();
+      console.log(data);
+
+      if (data.status === "success") {
+        showPopup("Login Successful 🎉", "success");
+      } else {
+        showPopup("Invalid Username or Password ❌", "error");
+      }
+
+    } catch (err) {
+      console.error(err);
+      showPopup("Server connection failed ❌", "error");
     }
   });
