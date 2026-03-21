@@ -6,14 +6,18 @@ import mysql.connector
 app = Flask(__name__)
 CORS(app)   # enable CORS
 
+import urllib.parse
 
 def get_db():
+    url = os.getenv("DATABASE_URL")
+    parsed = urllib.parse.urlparse(url)
+
     return mysql.connector.connect(
-        host=os.getenv("MYSQLHOST"),
-        user=os.getenv("MYSQLUSER"),
-        password=os.getenv("MYSQLPASSWORD"),
-        database=os.getenv("MYSQLDATABASE"),
-        port=int(os.getenv("MYSQLPORT"))
+        host=parsed.hostname,
+        user=parsed.username,
+        password=parsed.password,
+        database=parsed.path[1:],
+        port=parsed.port
     )
 
 
