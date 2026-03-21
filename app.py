@@ -10,6 +10,10 @@ CORS(app)   # enable CORS
 
 def get_db():
     url = os.getenv("DATABASE_URL")
+
+    if not url:
+        raise ValueError("DATABASE_URL not found")
+
     parsed = urllib.parse.urlparse(url)
 
     return mysql.connector.connect(
@@ -19,6 +23,8 @@ def get_db():
         database=parsed.path[1:],
         port=parsed.port
     )
+    
+print(os.getenv("DATABASE_URL"))
 
 
 @app.route("/")
