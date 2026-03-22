@@ -28,6 +28,20 @@ def get_db():
 def home():
     return {"message": "API Running"}
 
+@app.route("/dbtest")
+def dbtest():
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT 1")
+        cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        return {"message": "Database Connected"}
+
+    except Exception as e:
+        return {"error": str(e)}
 
 # ===== REGISTER =====
 @app.route("/register", methods=["POST"])
@@ -102,6 +116,7 @@ def login():
     except Exception as e:
         print("Login error:", e)
         return jsonify({"error": str(e)}), 500
+    
 
 
 # ===== RUN APP =====
