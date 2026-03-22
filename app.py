@@ -110,6 +110,23 @@ def env():
     return {
         "DATABASE_URL": str(os.getenv("DATABASE_URL"))
     }
+    
+@app.route("/parsetest")
+def parsetest():
+    url = os.getenv("DATABASE_URL")
+
+    if not url:
+        return {"error": "DATABASE_URL not found"}
+
+    parsed = urllib.parse.urlparse(url)
+
+    return {
+        "host": parsed.hostname,
+        "user": parsed.username,
+        "password": parsed.password,
+        "database": parsed.path[1:],   # removes /
+        "port": parsed.port
+    }
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
