@@ -14,14 +14,14 @@ def get_db():
         print("HOST:", os.getenv("MYSQLHOST"))
         print("USER:", os.getenv("MYSQLUSER"))
         print("PASS:", os.getenv("MYSQLPASSWORD"))
-        print("DB:", os.getenv("MYSQLDATABASE"))
+        print("DB:", os.getenv("MYSQL_DATABASE"))
         print("PORT:", os.getenv("MYSQLPORT"))
 
         return mysql.connector.connect(
             host=os.getenv("MYSQLHOST", "autorack.proxy.rlwy.net"),
             user=os.getenv("MYSQLUSER", "root"),
             password=os.getenv("MYSQLPASSWORD"),
-            database=os.getenv("MYSQLDATABASE", "railway"),
+            database=os.getenv("MYSQL_DATABASE", "railway"),
             port=int(os.getenv("MYSQLPORT", 50880))
         )
     except mysql.connector.Error as err:
