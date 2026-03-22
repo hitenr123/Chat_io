@@ -12,18 +12,23 @@ CORS(app)   # enable CORS
 def get_db():
     try:
         url = os.getenv("DATABASE_URL")
-
         parsed = urllib.parse.urlparse(url)
+
+        print("Connecting to DB...")
+        print("HOST:", parsed.hostname)
+        print("USER:", parsed.username)
+        print("DB:", parsed.path[1:])
+        print("PORT:", parsed.port)
 
         conn = mysql.connector.connect(
             host=parsed.hostname,
             user=parsed.username,
             password=parsed.password,
-            database=parsed.path[1:],   # removes leading /
+            database=parsed.path[1:],
             port=parsed.port
         )
 
-        print("Database Connected Successfully")
+        print("DATABASE CONNECTED ✅")
         return conn
 
     except Exception as e:
