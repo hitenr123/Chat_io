@@ -13,25 +13,26 @@ def get_db():
         conn = mysql.connector.connect(
             host=os.getenv("MYSQLHOST"),
             user=os.getenv("MYSQLUSER"),
-            password=os.getenv("MYSQLPASSWORD"),
+            password=os.getenv("MYSQL_ROOT_PASSWORD"),  # correct variable
             database=os.getenv("MYSQLDATABASE"),
             port=int(os.getenv("MYSQLPORT"))
         )
         return conn
+
     except Exception as e:
         print("Database connection error:", e)
         return None
 
 
 # ===== TEST ROUTE =====
-@app.route("/")
-def home():
-    return {"message": "API Running"}
-
 @app.route("/dbtest")
 def dbtest():
+    conn = get_db()
+
+    if conn is None:
+        return {"error": "Database connection failed"}
+
     try:
-        conn = get_db()
         cursor = conn.cursor()
         cursor.execute("SELECT 1")
         cursor.fetchone()
