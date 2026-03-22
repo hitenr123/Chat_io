@@ -53,9 +53,7 @@ document
 
       if (data.status === "success") {
         showPopup("Registration Successful 🎉", "success");
-      } else if (data.error) {
-        showPopup(data.error, "error");
-      } else {
+      }else {
         showPopup("Registration Failed ❌", "error");
       }
 
