@@ -18,14 +18,16 @@ def get_db():
             host=parsed.hostname,
             user=parsed.username,
             password=parsed.password,
-            database=parsed.path[1:],   # remove '/'
-            port=parsed.port
+            database=parsed.path[1:],
+            port=parsed.port,
+            ssl_disabled=False   # important for Railway
         )
 
+        print("DB CONNECTED")
         return conn
 
     except Exception as e:
-        print("DB ERROR:", e)
+        print("Database connection error:", e)
         return None
 
 
