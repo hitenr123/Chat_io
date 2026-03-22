@@ -1,11 +1,11 @@
-from flask import Flask, render_template, request, jsonify
-from flask_cors import CORS, cross_origin
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import os
-import urllib.parse
 import mysql.connector
+import urllib.parse
 
 app = Flask(__name__)
-CORS(app)   # enable CORS
+CORS(app)
 
 
 # ===== DATABASE CONNECTION =====
@@ -14,48 +14,45 @@ def get_db():
         url = os.getenv("DATABASE_URL")
         parsed = urllib.parse.urlparse(url)
 
-        print("Connecting to DB...")
-        print("HOST:", parsed.hostname)
-        print("USER:", parsed.username)
-        print("DB:", parsed.path[1:])
-        print("PORT:", parsed.port)
-
         conn = mysql.connector.connect(
             host=parsed.hostname,
             user=parsed.username,
             password=parsed.password,
-            database=parsed.path[1:],
+            database=parsed.path[1:],   # remove '/'
             port=parsed.port
         )
 
-        print("DATABASE CONNECTED ✅")
         return conn
 
     except Exception as e:
-        print("Database connection error:", e)
+        print("DB ERROR:", e)
         return None
 
-@app.route("/")
-def home():
-    return render_template("index.html")
+
+# ===== TEST ROUTE =====
+@app.route("/dbtest")
+def dbtest():
+    conn = get_db()
+    if conn:
+        return "Database Connected ✅"
+    else:
+        return "Database Failed ❌"
 
 
+# ===== REGISTER =====
 @app.route("/register", methods=["POST"])
 def register():
     try:
-        data = request.get_json(silent=True)
+        data = request.get_json()
 
-        if not data:
-            return jsonify({"error": "No JSON received"}), 400
-
-        username = data.get("username")
-        email = data.get("email")
-        password = data.get("password")
+        username = data["username"]
+        email = data["email"]
+        password = data["password"]
 
         conn = get_db()
         if not conn:
             return jsonify({"error": "Database connection failed"}), 500
-        
+
         cursor = conn.cursor()
 
         cursor.execute(
@@ -72,18 +69,19 @@ def register():
         return jsonify({"error": str(e)})
 
 
+# ===== LOGIN =====
 @app.route("/login", methods=["POST"])
 def login():
     try:
-        data = request.get_json(silent=True)
+        data = request.get_json()
 
-        if not data:
-            return jsonify({"error": "No JSON received"}), 400
-
-        username = data.get("username")
-        password = data.get("password")
+        username = data["username"]
+        password = data["password"]
 
         conn = get_db()
+        if not conn:
+            return jsonify({"error": "Database connection failed"}), 500
+
         cursor = conn.cursor()
 
         cursor.execute(
@@ -101,38 +99,9 @@ def login():
 
     except Exception as e:
         return jsonify({"error": str(e)})
-    
-@app.route("/dbtest")
-def dbtest():
-    conn = get_db()
-    if conn:
-        return "Database Connected"
-    else:
-        return "Database Failed"
 
-@app.route("/env")
-def env():
-    return {
-        "DATABASE_URL": str(os.getenv("DATABASE_URL"))
-    }
-    
-@app.route("/parsetest")
-def parsetest():
-    url = os.getenv("DATABASE_URL")
 
-    if not url:
-        return {"error": "DATABASE_URL not found"}
-
-    parsed = urllib.parse.urlparse(url)
-
-    return {
-        "host": parsed.hostname,
-        "user": parsed.username,
-        "password": parsed.password,
-        "database": parsed.path[1:],   # removes /
-        "port": parsed.port
-    }
-
+# ===== RUN APP =====
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
