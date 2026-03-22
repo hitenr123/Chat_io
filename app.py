@@ -10,25 +10,16 @@ CORS(app)
 
 # ===== DATABASE CONNECTION =====
 def get_db():
-    try:
-        url = os.getenv("DATABASE_URL")
-        parsed = urllib.parse.urlparse(url)
+    url = os.getenv("DATABASE_URL")
+    parsed = urllib.parse.urlparse(url)
 
-        conn = mysql.connector.connect(
-            host=parsed.hostname,
-            user=parsed.username,
-            password=parsed.password,
-            database=parsed.path[1:],
-            port=parsed.port,
-            ssl_disabled=False   # important for Railway
-        )
-
-        print("DB CONNECTED")
-        return conn
-
-    except Exception as e:
-        print("Database connection error:", e)
-        return None
+    return mysql.connector.connect(
+        host=parsed.hostname,
+        user=parsed.username,
+        password=parsed.password,
+        database=parsed.path.lstrip("/"),
+        port=parsed.port
+    )
 
 
 # ===== TEST ROUTE =====
