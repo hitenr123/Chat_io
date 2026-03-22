@@ -40,6 +40,26 @@ def dbtest():
     else:
         return "Database Failed ❌"
 
+    
+@app.route("/dberror")
+def dberror():
+    try:
+        url = os.getenv("DATABASE_URL")
+        parsed = urllib.parse.urlparse(url)
+
+        conn = mysql.connector.connect(
+            host=parsed.hostname,
+            user=parsed.username,
+            password=parsed.password,
+            database=parsed.path[1:],
+            port=parsed.port
+        )
+
+        return "Connected"
+
+    except Exception as e:
+        return str(e)
+
 
 # ===== REGISTER =====
 @app.route("/register", methods=["POST"])
