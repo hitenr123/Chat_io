@@ -100,6 +100,11 @@ def dbtest():
     else:
         return "Database Failed"
 
+@app.route("/env")
+def env():
+    return {
+        "DATABASE_URL": str(os.getenv("DATABASE_URL"))
+    }
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
