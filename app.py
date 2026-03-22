@@ -23,13 +23,15 @@ def get_db():
 
 
 # ===== TEST ROUTE =====
-@app.route("/dbtest")
-def dbtest():
-    conn = get_db()
-    if conn:
-        return "Database Connected ✅"
-    else:
-        return "Database Failed ❌"
+@app.route("/testdb")
+def testdb():
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT 1")
+        return {"status": "Database Connected"}
+    except Exception as e:
+        return {"error": str(e)}
 
     
 @app.route("/dberror")
