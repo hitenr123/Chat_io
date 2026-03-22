@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 import mysql.connector
-import urllib.parse
 
 app = Flask(__name__)
 CORS(app)
@@ -10,45 +9,24 @@ CORS(app)
 
 # ===== DATABASE CONNECTION =====
 def get_db():
-    return mysql.connector.connect(
-        host=os.getenv("MYSQLHOST"),
-        user=os.getenv("MYSQLUSER"),
-        password=os.getenv("MYSQLPASSWORD"),
-        database=os.getenv("MYSQLDATABASE"),
-        port=int(os.getenv("MYSQLPORT"))
-    )
+    try:
+        conn = mysql.connector.connect(
+            host=os.getenv("MYSQLHOST"),
+            user=os.getenv("MYSQLUSER"),
+            password=os.getenv("MYSQLPASSWORD"),
+            database=os.getenv("MYSQLDATABASE"),
+            port=int(os.getenv("MYSQLPORT"))
+        )
+        return conn
+    except Exception as e:
+        print("Database connection error:", e)
+        return None
 
 
 # ===== TEST ROUTE =====
-@app.route("/dbtest")
-def dbtest():
-    try:
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT 1")
-        return {"message": "Database Connected"}
-    except Exception as e:
-        return {"error": str(e)}
-
-    
-@app.route("/dberror")
-def dberror():
-    try:
-        url = os.getenv("DATABASE_URL")
-        parsed = urllib.parse.urlparse(url)
-
-        conn = mysql.connector.connect(
-            host=parsed.hostname,
-            user=parsed.username,
-            password=parsed.password,
-            database=parsed.path[1:],
-            port=parsed.port
-        )
-
-        return "Connected"
-
-    except Exception as e:
-        return str(e)
+@app.route("/")
+def home():
+    return {"message": "API Running"}
 
 
 # ===== REGISTER =====
@@ -57,28 +35,38 @@ def register():
     try:
         data = request.get_json()
 
-        username = data["username"]
-        email = data["email"]
-        password = data["password"]
+        username = data.get("username")
+        email = data.get("email")
+        password = data.get("password")
 
         conn = get_db()
-        if not conn:
+        if conn is None:
             return jsonify({"error": "Database connection failed"}), 500
 
         cursor = conn.cursor()
 
+        # check duplicate username
+        cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
+        existing_user = cursor.fetchone()
+
+        if existing_user:
+            return jsonify({"status": "exists"})
+
+        # insert new user
         cursor.execute(
             "INSERT INTO users (username,email,password) VALUES (%s,%s,%s)",
             (username, email, password)
         )
 
         conn.commit()
+        cursor.close()
         conn.close()
 
         return jsonify({"status": "success"})
 
     except Exception as e:
-        return jsonify({"error": str(e)})
+        print("Register error:", e)
+        return jsonify({"error": str(e)}), 500
 
 
 # ===== LOGIN =====
@@ -87,11 +75,11 @@ def login():
     try:
         data = request.get_json()
 
-        username = data["username"]
-        password = data["password"]
+        username = data.get("username")
+        password = data.get("password")
 
         conn = get_db()
-        if not conn:
+        if conn is None:
             return jsonify({"error": "Database connection failed"}), 500
 
         cursor = conn.cursor()
@@ -102,6 +90,8 @@ def login():
         )
 
         user = cursor.fetchone()
+
+        cursor.close()
         conn.close()
 
         if user:
@@ -110,7 +100,8 @@ def login():
             return jsonify({"status": "invalid"})
 
     except Exception as e:
-        return jsonify({"error": str(e)})
+        print("Login error:", e)
+        return jsonify({"error": str(e)}), 500
 
 
 # ===== RUN APP =====
