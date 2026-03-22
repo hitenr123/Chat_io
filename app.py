@@ -94,6 +94,14 @@ def login():
 
     except Exception as e:
         return jsonify({"error": str(e)})
+    
+@app.route("/dbtest")
+def dbtest():
+    conn = get_db()
+    if conn:
+        return "Database Connected"
+    else:
+        return "Database Failed"
 
 
 if __name__ == "__main__":
