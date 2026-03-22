@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import os
 import mysql.connector
 import urllib.parse
@@ -8,23 +8,19 @@ app = Flask(__name__)
 CORS(app)   # enable CORS
 
 
+# ===== DATABASE CONNECTION =====
 def get_db():
-    url = os.getenv("DATABASE_URL")
-
-    if not url:
-        raise ValueError("DATABASE_URL not found")
-
-    parsed = urllib.parse.urlparse(url)
-
-    return mysql.connector.connect(
-        host=parsed.hostname,
-        user=parsed.username,
-        password=parsed.password,
-        database=parsed.path[1:],
-        port=parsed.port
-    )
-    
-print(os.getenv("DATABASE_URL"))
+    try:
+        return mysql.connector.connect(
+            host="autorack.proxy.rlwy.net",
+            user="root",
+            password="hiten",
+            database="railway",
+            port=50880
+        )
+    except mysql.connector.Error as err:
+        print("Database connection error:", err)
+        return None
 
 
 @app.route("/")
