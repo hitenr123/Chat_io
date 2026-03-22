@@ -11,21 +11,18 @@ CORS(app)   # enable CORS
 # ===== DATABASE CONNECTION =====
 def get_db():
     try:
-        print("HOST:", os.getenv("MYSQLHOST"))
-        print("USER:", os.getenv("MYSQLUSER"))
-        print("PASS:", os.getenv("MYSQLPASSWORD"))
-        print("DB:", os.getenv("MYSQL_DATABASE"))
-        print("PORT:", os.getenv("MYSQLPORT"))
+        url = os.getenv("DATABASE_URL")
+        parsed = urllib.parse.urlparse(url)
 
         return mysql.connector.connect(
-            host=os.getenv("MYSQLHOST", "autorack.proxy.rlwy.net"),
-            user=os.getenv("MYSQLUSER", "root"),
-            password=os.getenv("MYSQLPASSWORD"),
-            database=os.getenv("MYSQL_DATABASE", "railway"),
-            port=int(os.getenv("MYSQLPORT", 50880))
+            host=parsed.hostname,
+            user=parsed.username,
+            password=parsed.password,
+            database=parsed.path.lstrip("/"),
+            port=parsed.port
         )
-    except mysql.connector.Error as err:
-        print("Database connection error:", err)
+    except Exception as e:
+        print("Database connection error:", e)
         return None
 
 @app.route("/")
