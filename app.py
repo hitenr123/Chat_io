@@ -10,26 +10,23 @@ CORS(app)
 
 # ===== DATABASE CONNECTION =====
 def get_db():
-    url = os.getenv("DATABASE_URL")
-    parsed = urllib.parse.urlparse(url)
-
     return mysql.connector.connect(
-        host=parsed.hostname,
-        user=parsed.username,
-        password=parsed.password,
-        database=parsed.path.lstrip("/"),
-        port=parsed.port
+        host=os.getenv("MYSQLHOST"),
+        user=os.getenv("MYSQLUSER"),
+        password=os.getenv("MYSQLPASSWORD"),
+        database=os.getenv("MYSQLDATABASE"),
+        port=int(os.getenv("MYSQLPORT"))
     )
 
 
 # ===== TEST ROUTE =====
-@app.route("/testdb")
-def testdb():
+@app.route("/dbtest")
+def dbtest():
     try:
         db = get_db()
         cursor = db.cursor()
         cursor.execute("SELECT 1")
-        return {"status": "Database Connected"}
+        return {"message": "Database Connected"}
     except Exception as e:
         return {"error": str(e)}
 
