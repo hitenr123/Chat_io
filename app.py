@@ -4,7 +4,7 @@ import os
 import mysql.connector
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 
 # ===== DATABASE CONNECTION =====
